@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NutMag Labs — website
 
-## Getting Started
+The nutmaglabs.xyz website. Built with Next.js 16 (App Router), Tailwind CSS v4 and shadcn/ui (new-york style, dark theme).
 
-First, run the development server:
+## Run it locally
+
+Needs Node.js 20 or newer.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy (Vercel, free)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push this folder to a GitHub repo.
+2. Go to vercel.com → **Add New → Project** → import the repo. No settings to change.
+3. In the Vercel project, **Settings → Domains** → add `nutmaglabs.xyz` and follow the DNS instructions.
 
-## Learn More
+## Before you launch — fill these in
 
-To learn more about Next.js, take a look at the following resources:
+| What | Where |
+|---|---|
+| WhatsApp number (international format, digits only) | `src/lib/site.ts` → `whatsappNumber` |
+| Real case study numbers | `src/content/case-studies.ts` → `cardMetric` and `stats` |
+| Blog post dates (set to the day you publish) | `src/content/posts.ts` → `date` |
+| Contact form email delivery | Environment variables below |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Until a WhatsApp number is set, every WhatsApp button links to the contact page.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Contact form emails
 
-## Deploy on Vercel
+The form posts to `/api/contact`. To receive submissions by email, create a free account at resend.com and add these environment variables in Vercel (**Settings → Environment Variables**):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+RESEND_API_KEY=re_xxxxxxxx
+CONTACT_TO_EMAIL=brrrypto@gmail.com
+CONTACT_FROM_EMAIL=NutMag Labs <hello@nutmaglabs.xyz>   # optional, after verifying your domain in Resend
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Without them the form still works, and submissions are written to the server logs.
+
+## Where things live
+
+```
+src/
+  app/
+    page.tsx                         Home
+    contact/                         Book a call page + form
+    api/contact/route.ts             Form handler (emails via Resend)
+    case-studies/[slug]/page.tsx     3 case studies
+    ai-for-travel-agencies/          Industry page
+    ai-for-shopify-stores/           Industry page
+    solutions/sales-product-assistants/  Service page
+    blog/                            Blog index + posts
+    sitemap.ts, robots.ts            SEO
+  content/                           All page copy — edit text here
+    home.ts, case-studies.ts, landings.ts, posts.ts
+    posts/*.md                       Blog post bodies (Markdown)
+  components/
+    ui/                              shadcn/ui components (from github.com/shadcn-ui/ui)
+    blocks.tsx                       Shared page sections
+    site-chrome.tsx                  Header, footer, logo
+  lib/site.ts                        Site name, URL, email, WhatsApp
+public/llms.txt                      Summary for AI search tools
+```
+
+## Adding a blog post
+
+1. Add a Markdown file to `src/content/posts/your-slug.md`.
+2. Add an entry to the `posts` list in `src/content/posts.ts` (slug, title, description, date).
+
+It appears on `/blog`, gets its own page, and is added to the sitemap automatically.
+
+## SEO included
+
+- Unique title, description and canonical URL on every page
+- Structured data: Organization, Service, Article, BlogPosting, FAQPage, BreadcrumbList
+- `sitemap.xml`, `robots.txt` and `llms.txt`
+- Every page is pre-rendered as static HTML
+
+After launch, add the site to Google Search Console and submit `https://nutmaglabs.xyz/sitemap.xml`.

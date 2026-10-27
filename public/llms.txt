@@ -1,0 +1,16 @@
+# NutMag Labs
+
+> NutMag Labs is an AI automation studio. We design, build and maintain custom AI agents, automations and AI-powered websites, online stores and apps for small and mid-sized businesses worldwide. Every project starts with a free discovery call and a free working demo.
+
+## Services
+- [Sales & product assistants](https://nutmaglabs.xyz/solutions/sales-product-assistants): AI assistants that answer from live catalogue, stock and pricing data and hand ready buyers to staff.
+- [AI for Shopify stores](https://nutmaglabs.xyz/ai-for-shopify-stores): product assistants and support automation for Shopify and WooCommerce.
+- [AI for travel agencies](https://nutmaglabs.xyz/ai-for-travel-agencies): itinerary planning, booking, documents, payments and on-trip support.
+
+## Case studies
+- [Jewellery retail AI assistant](https://nutmaglabs.xyz/case-studies/jewellery-ai-assistant): 3,000+ customer questions answered per month without staff.
+- [Travel agency AI app](https://nutmaglabs.xyz/case-studies/travel-agency-ai-app): trip request to priced itinerary in under 2 minutes.
+- [Agri-Trade Desk Agent](https://nutmaglabs.xyz/case-studies/agri-trade-desk-agent): every dispatch paperwork-checked before loading.
+
+## Contact
+- [Book a free call](https://nutmaglabs.xyz/contact) · brrrypto@gmail.com
