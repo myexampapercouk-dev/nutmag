@@ -4,6 +4,8 @@ import { caseStudies } from "@/content/case-studies"
 import { posts } from "@/content/posts"
 import { site } from "@/lib/site"
 
+export const dynamic = "force-static"
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: "", priority: 1 },

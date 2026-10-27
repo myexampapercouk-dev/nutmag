@@ -13,11 +13,24 @@ npm run dev
 
 Open http://localhost:3000.
 
-## Deploy (Vercel, free)
+## Build the static site
 
-1. Push this folder to a GitHub repo.
-2. Go to vercel.com → **Add New → Project** → import the repo. No settings to change.
-3. In the Vercel project, **Settings → Domains** → add `nutmaglabs.xyz` and follow the DNS instructions.
+The site is a static export: no server needed.
+
+```bash
+npm run build
+```
+
+This writes plain HTML, CSS and JS to `out/`. Upload the contents of `out/` to any static host (Netlify, Cloudflare Pages, GitHub Pages, Vercel, cPanel, S3…).
+
+Pages are emitted as `contact.html`, `blog/ai-chatbot-vs-ai-agent.html` and so on. Netlify, Cloudflare Pages, Vercel and GitHub Pages serve these at `/contact` automatically. On Apache/cPanel, add this to `.htaccess` so clean URLs work:
+
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+ErrorDocument 404 /404.html
+```
 
 ## Before you launch — fill these in
 
@@ -26,21 +39,24 @@ Open http://localhost:3000.
 | WhatsApp number (international format, digits only) | `src/lib/site.ts` → `whatsappNumber` |
 | Real case study numbers | `src/content/case-studies.ts` → `cardMetric` and `stats` |
 | Blog post dates (set to the day you publish) | `src/content/posts.ts` → `date` |
-| Contact form email delivery | Environment variables below |
+| Contact form email delivery | `NEXT_PUBLIC_WEB3FORMS_KEY`, see below |
 
 Until a WhatsApp number is set, every WhatsApp button links to the contact page.
 
 ### Contact form emails
 
-The form posts to `/api/contact`. To receive submissions by email, create a free account at resend.com and add these environment variables in Vercel (**Settings → Environment Variables**):
+The form sends submissions through [Web3Forms](https://web3forms.com) (free), since a static site has no server of its own.
 
-```
-RESEND_API_KEY=re_xxxxxxxx
-CONTACT_TO_EMAIL=brrrypto@gmail.com
-CONTACT_FROM_EMAIL=NutMag Labs <hello@nutmaglabs.xyz>   # optional, after verifying your domain in Resend
-```
+1. Go to web3forms.com, enter the email address that should receive submissions, and copy the access key it sends you.
+2. Create `.env.local` in this folder (or set the variable in your host's build settings):
 
-Without them the form still works, and submissions are written to the server logs.
+   ```
+   NEXT_PUBLIC_WEB3FORMS_KEY=your-access-key
+   ```
+
+3. Rebuild with `npm run build`.
+
+The key is baked into the page at build time and is meant to be public. Until it is set, the form shows an error with your email address as a fallback.
 
 ## Where things live
 
@@ -48,8 +64,7 @@ Without them the form still works, and submissions are written to the server log
 src/
   app/
     page.tsx                         Home
-    contact/                         Book a call page + form
-    api/contact/route.ts             Form handler (emails via Resend)
+    contact/                         Book a call page + form (sends via Web3Forms)
     case-studies/[slug]/page.tsx     3 case studies
     ai-for-travel-agencies/          Industry page
     ai-for-shopify-stores/           Industry page

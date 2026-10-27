@@ -43,23 +43,30 @@ export function ContactForm() {
     setStatus("sending")
     setError("")
     try {
-      const res = await fetch("/api/contact", {
+      // Delivered by Web3Forms (https://web3forms.com). The access key is public by design.
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY
+      if (!accessKey) throw new Error("The form isn't connected yet.")
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
+          access_key: accessKey,
+          subject: `Discovery call request — ${fd.get("business")}`,
+          from_name: "NutMag Labs website",
+          replyto: fd.get("email"),
           name: fd.get("name"),
           business: fd.get("business"),
           email: fd.get("email"),
-          phone: fd.get("phone"),
+          phone: fd.get("phone") || "-",
           country: fd.get("country"),
-          timezone: fd.get("timezone"),
-          message: fd.get("message"),
-          goals,
-          slot,
+          timezone: fd.get("timezone") || "-",
+          "best time": slot,
+          "interested in": goals.join(", ") || "-",
+          message: fd.get("message") || "-",
         }),
       })
       const json = await res.json().catch(() => ({}))
-      if (!res.ok || !json.ok) throw new Error(json.error || "Something went wrong.")
+      if (!res.ok || !json.success) throw new Error(json.message || "Something went wrong.")
       setStatus("sent")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.")
